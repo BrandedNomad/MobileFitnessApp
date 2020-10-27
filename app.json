@@ -1,0 +1,12 @@
+{
+  "name": "fitness",
+  "displayName": "fitness",
+  "expo": {
+    "name": "fitness",
+    "slug": "fitness",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
