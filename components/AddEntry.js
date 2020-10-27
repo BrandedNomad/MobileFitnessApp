@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 import {getMetricMetaInfo, timeToString} from '../utils/helpers'
-import Slider from "./Slider";
+import MySlider from "./MySlider";
 import Stepper from "./Stepper";
 import DateHeader from "./DateHeader";
 import {TouchableOpacity} from "react-native";
@@ -100,7 +100,7 @@ class AddEntry extends Component {
                         <View key={key}>
                             {getIcon()}
                             {type === 'slider'
-                                ? <Slider
+                                ? <MySlider
                                     value={value}
                                     onChange={(value) => this.slide(key, value)}
                                     {...rest}
