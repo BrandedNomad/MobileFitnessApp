@@ -5,6 +5,8 @@ import MySlider from "./MySlider";
 import MyStepper from "./MyStepper";
 import DateHeader from "./DateHeader";
 import {TouchableOpacity} from "react-native";
+import {Ionicons} from '@expo/vector-icons';
+import TextButton from './TextButton'
 
 
 function SubmitBtn({handlePress}){
@@ -31,6 +33,10 @@ class AddEntry extends Component {
             eat: 0,
         }
         this.submit = this.submit.bind(this)
+        this.reset = this.reset.bind(this)
+        this.increment = this.increment.bind(this)
+        this.decrement = this.decrement.bind(this)
+        this.slide = this.slide.bind(this)
     }
 
     increment(metric) {
@@ -84,9 +90,28 @@ class AddEntry extends Component {
 
     }
 
+    reset(){
+        const key = timeToString()
+    }
+
     render() {
 
         const metaInfo = getMetricMetaInfo()
+
+        if(true){
+            return (
+                <View>
+                    <Ionicons
+                        name='ios-happy'
+                        size={100}
+                    />
+                    <Text>You already logged your information for today</Text>
+                    <TextButton onPress={this.reset}>
+                        Reset
+                    </TextButton>
+                </View>
+            )
+        }
 
         return (
             <View>
