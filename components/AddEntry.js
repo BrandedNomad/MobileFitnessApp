@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 import {getMetricMetaInfo, timeToString} from '../utils/helpers'
 import MySlider from "./MySlider";
-import Stepper from "./Stepper";
+import MyStepper from "./MyStepper";
 import DateHeader from "./DateHeader";
 import {TouchableOpacity} from "react-native";
 
@@ -105,7 +105,7 @@ class AddEntry extends Component {
                                     onChange={(value) => this.slide(key, value)}
                                     {...rest}
                                 />
-                                : <Stepper
+                                : <MyStepper
                                     value={value}
                                     onIncrement={() => this.increment(key)}
                                     onDecrement={() => this.decrement(key)}
