@@ -7,6 +7,7 @@ import DateHeader from "./DateHeader";
 import {TouchableOpacity} from "react-native";
 import {Ionicons} from '@expo/vector-icons';
 import TextButton from './TextButton'
+import {submitEntry,removeEntry} from "../utils/api";
 
 
 function SubmitBtn({handlePress}){
@@ -75,8 +76,8 @@ class AddEntry extends Component {
     }
 
     submit(){
-        // const key = timeToString()
-        // const entry = this.state
+        const key = timeToString()
+        const entry = this.state
 
         this.setState(() => {
             return {
@@ -88,17 +89,21 @@ class AddEntry extends Component {
             }
         })
 
+        submitEntry({key,entry})
+
     }
 
     reset(){
         const key = timeToString()
+
+        removeEntry(key)
     }
 
     render() {
 
         const metaInfo = getMetricMetaInfo()
 
-        if(true){
+        if(false){
             return (
                 <View>
                     <Ionicons
