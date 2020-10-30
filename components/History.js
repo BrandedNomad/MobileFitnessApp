@@ -7,30 +7,37 @@ import {fetchCalendarResults} from "../utils/api";
 import UdaciFitnessCalendar from 'udacifitness-calendar'
 import {white} from '../utils/colors'
 import DateHeader from "./DateHeader";
+import MetricCard from "./MetricCard";
+import {AppLoading} from 'expo';
 
 
 class History extends Component {
 
     constructor(props){
         super(props)
+        this.state={
+            ready:false
+        }
         this.renderEmptyDate = this.renderEmptyDate.bind(this)
         this.renderItem = this.renderItem.bind(this)
     }
 
     componentDidMount(){
         const {dispatch} = this.props;
-        fetchCalendarResults().then((entries)=>{
-            dispatch(receiveEntries(entries))
-        }).then(({entries})=>{
-            console.log("yoohoo",entries)
-            if(!entries[timeToString()]){
-                dispatch(addEntry({
-                    [timeToString()]:getDailyReminderValue()
+        fetchCalendarResults()
+            .then((entries)=>{
+                return dispatch(receiveEntries(entries))
+            }).then(({entries})=>{
+                if(!entries[timeToString()]){
+                    dispatch(addEntry({
+                        [timeToString()]:getDailyReminderValue()
                 }))
             }
-        }).catch((error)=>{
-            console.log(error)
-        })
+            }).then(()=> {
+                this.setState({ready:true})
+            }).catch((error)=>{
+                console.log(error)
+            })
     }
 
     renderItem=({today, ...metrics},formattedDate,key)=>{
@@ -44,7 +51,7 @@ class History extends Component {
                         </Text>
                     </View>
                     :<TouchableOpacity onPress={()=> console.log("Pressed")}>
-                        <Text>{JSON.stringify(metrics)}</Text>
+                        <MetricCard metrics={metrics} date={formattedDate}/>
                     </TouchableOpacity>
                 }
             </View>
@@ -67,6 +74,14 @@ class History extends Component {
 
 
         const {entries} = this.props
+        const {ready} = this.state
+
+        if(ready === false){
+            return (
+                <View style={{flex:1}}>
+                    <AppLoading/>
+                </View>)
+        }
 
 
         return (
