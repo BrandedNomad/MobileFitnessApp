@@ -13,6 +13,7 @@ import {addEntry} from "../actions";
 import {getDailyReminderValue} from "../utils/helpers";
 
 
+
 function SubmitBtn({handlePress}){
     return (
         <View>
@@ -44,6 +45,7 @@ class AddEntry extends Component {
         this.increment = this.increment.bind(this)
         this.decrement = this.decrement.bind(this)
         this.slide = this.slide.bind(this)
+
     }
 
     increment(metric) {
@@ -99,6 +101,9 @@ class AddEntry extends Component {
             }
         })
 
+        this.props.navigation.goBack()
+
+
         submitEntry({key,entry})
 
     }
@@ -110,8 +115,11 @@ class AddEntry extends Component {
             [key]: getDailyReminderValue()
         }))
 
+        console.log(this.props)
+
         removeEntry(key)
     }
+
 
     render() {
 

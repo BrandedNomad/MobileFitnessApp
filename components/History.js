@@ -41,6 +41,17 @@ class History extends Component {
     }
 
     renderItem=({today, ...metrics},formattedDate,key)=>{
+
+        const createHeaderTitle = (key)=>{
+
+            const year = key.slice(0,4)
+            const month = key.slice(5,7)
+            const day = key.slice(8)
+
+            return `${day}/${month}/${year}`
+
+        }
+
         return (
             <View style={[styles.item,{flex:1}]}>
                 {today
@@ -50,7 +61,10 @@ class History extends Component {
                             today
                         </Text>
                     </View>
-                    :<TouchableOpacity onPress={()=> console.log("Pressed")}>
+                    :<TouchableOpacity onPress={()=> this.props.navigation.navigate(
+                        'EntryDetails',
+                        {entryId:key, dynamicTitle: createHeaderTitle(key)}
+                    )}>
                         <MetricCard metrics={metrics} date={formattedDate}/>
                     </TouchableOpacity>
                 }
