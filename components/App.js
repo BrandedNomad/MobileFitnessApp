@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React,{Component} from 'react';
 import { View, Platform, StatusBar } from 'react-native';
 import AddEntry from "./AddEntry";
 import {createStore} from "redux";
@@ -14,7 +14,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 import Constants from 'expo-constants';
 import EntryDetails from "./EntryDetails";
 import Live from "./Live";
-
+import {setLocalNotification} from "../utils/helpers";
 
 
 function MyStatusBar({backgroundColor,...props}){
@@ -93,19 +93,27 @@ const mainNavigator = () =>{
     )
 }
 
-export default function App() {
+export default class App extends Component {
+
+    componentDidMount(){
+        setLocalNotification()
+    }
+
+    render(){
+        return (
+            <Provider store={createStore(reducer)}>
+                <MyStatusBar backgroundColor={purple} barStyle='light-content'/>
+                <NavigationContainer>
+                    {mainNavigator()}
+                </NavigationContainer>
+            </Provider>
+
+        );
+    }
 
 
 
-  return (
-      <Provider store={createStore(reducer)}>
-          <MyStatusBar backgroundColor={purple} barStyle='light-content'/>
-          <NavigationContainer>
-              {mainNavigator()}
-          </NavigationContainer>
-      </Provider>
 
-  );
 }
 
 

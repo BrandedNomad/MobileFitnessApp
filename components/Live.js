@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native'
+import {
+    View,
+    Text,
+    StyleSheet,
+    ActivityIndicator,
+    TouchableOpacity,
+    Animated
+} from 'react-native'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import {Foundation} from '@expo/vector-icons'
@@ -14,7 +21,8 @@ class Live extends Component {
         this.state={
             coords:null,
             status:null,
-            direction:''
+            direction:'',
+            bounceValue: new Animated.Value(1)
         }
         this.setLocation = this.setLocation.bind(this)
         this.askPermission = this.askPermission.bind(this)
@@ -66,7 +74,14 @@ class Live extends Component {
             timeInterval:1,
         },({coords})=>{
             const newDirection = calculateDirection(coords.heading)
-            console.log("here it is:",newDirection)
+            const {direction,bounceValue} = this.state
+
+            if(newDirection !== direction){
+                Animated.sequence([
+                    Animated.timing(bounceValue,{duration:200,toValue:1.10,useNativeDriver:true}),
+                    Animated.spring(bounceValue,{toValue:1,friction:4,useNativeDriver:true})
+                ]).start()
+            }
 
             this.setState(()=>{
                 return {
@@ -88,7 +103,7 @@ class Live extends Component {
     render(){
 
 
-        const {status,coords,direction} = this.state
+        const {status,coords,direction,bounceValue} = this.state
         console.log("here:", direction)
 
         if(status === null){
@@ -130,7 +145,11 @@ class Live extends Component {
             <View style={styles.container}>
                 <View style={styles.directionContainer}>
                     <Text style={styles.header}>You're heading</Text>
-                    <Text style={styles.direction}>{direction}</Text>
+                    <Animated.Text
+                        style={[styles.direction,{transform:[{scale:bounceValue}]}]}
+                    >
+                        {direction}
+                    </Animated.Text>
                 </View>
                 <View style={styles.metricContainer}>
                     <View style={styles.metric}>

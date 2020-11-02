@@ -1,12 +1,25 @@
 {
-  "name": "fitness",
-  "displayName": "fitness",
   "expo": {
-    "name": "fitness",
-    "slug": "fitness",
+    "name": "MyFitness",
+    "slug": "MyFitness",
+    "description": "A simple life-style activity logger",
+    "privacy": "public",
+    "sdkVersion": "39.0.2",
     "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "https://apprecs.org/gp/images/app-icons/300/89/com.neurondigital.exercisetimer.jpg",
+    "notification": {
+      "icon": "https://apprecs.org/gp/images/app-icons/300/89/com.neurondigital.exercisetimer.jpg"
+    },
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.brandednomad.myFitnessApp",
+      "useNextNotificationsApi": true
+    },
+    "ios": {
+      "bundleIdentifier": "com.brandednomad.myFitnessApp"
+    }
   }
 }

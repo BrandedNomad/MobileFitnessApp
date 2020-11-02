@@ -1,7 +1,11 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet,AsyncStorage} from 'react-native';
 import {FontAwesome, MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons'
 import {white, red, orange, blue, lightPurp, pink} from './colors'
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+
+export const NOTIFICATION_KEY = "MyFitness:notification"
 
 export function isBetween (num, x, y) {
     if (num >= x && num <= y) {
@@ -166,4 +170,68 @@ export function getDailyReminderValue(){
     return {
         today:"Don't forget to log your data today"
     }
+}
+
+export function clearLocalNotification(){
+    return AsyncStorage.removeItem(NOTIFICATION_KEY)
+        .then(Notifications.cancelAllScheduledNotificationsAsync)
+
+
+}
+
+function createNotification(){
+    return {
+        title:'Log your stats!',
+        body:"Dont forget to log your stats for today!",
+        ios:{
+            sound:true,
+        },
+        android:{
+            sound:true,
+            priority:'high',
+            sticky:false,
+            vibrate:true,
+        }
+    }
+
+}
+
+export function setLocalNotification(){
+    AsyncStorage.getItem(NOTIFICATION_KEY)
+        .then(JSON.parse)
+        .then((data)=>{
+            console.log("data",data)
+            if(data === null){
+                Permissions.askAsync(Permissions.NOTIFICATIONS)
+                    .then(({status})=>{
+                        console.log("Permission", status)
+                        if(status === 'granted'){
+                            Notifications.cancelAllScheduledNotificationsAsync()
+                            let tomorrow = new Date()
+                            tomorrow.setDate(tomorrow.getDate() + 1);
+                            tomorrow.setHours(16);
+                            tomorrow.setMinutes(0);
+
+                            Notifications.setNotificationChannelAsync('new-emails', {
+                                name: 'E-mail notifications',
+                                importance: Notifications.AndroidImportance.HIGH,
+                                sound: 'email-sound.wav', // <- for Android 8.0+, see channelId property below
+                            });
+
+                            Notifications.scheduleNotificationAsync({
+                                content:createNotification(),
+                                trigger:{
+                                    seconds:20,
+                                    channelId:'new-emails'
+                                }
+
+                            })
+
+                            AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+                        }
+                    })
+            }
+        })
+
+
 }

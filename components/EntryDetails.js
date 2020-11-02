@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, AsyncStorage} from 'react-native'
 import {connect} from 'react-redux'
 import {white} from "../utils/colors";
 import MetricCard from "./MetricCard";
@@ -7,6 +7,7 @@ import {addEntry} from "../actions";
 import {removeEntry} from "../utils/api";
 import {timeToString,getDailyReminderValue} from "../utils/helpers";
 import TextButton from "./TextButton";
+import {NOTIFICATION_KEY} from "../utils/helpers";
 
 
 class EntryDetails extends Component {
@@ -21,6 +22,7 @@ class EntryDetails extends Component {
         remove()
         goBack()
         removeEntry(entryId)
+        AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(null))
     }
 
     shouldComponentUpdate(nextProps) {

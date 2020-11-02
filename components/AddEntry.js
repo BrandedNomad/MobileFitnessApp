@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {View, Text,TouchableOpacity,Platform,StyleSheet} from 'react-native';
-import {getMetricMetaInfo, timeToString} from '../utils/helpers'
 import MySlider from "./MySlider";
 import MyStepper from "./MyStepper";
 import DateHeader from "./DateHeader";
@@ -10,7 +9,13 @@ import TextButton from './TextButton'
 import {submitEntry,removeEntry} from "../utils/api";
 import {white,purple} from '../utils/colors'
 import {addEntry} from "../actions";
-import {getDailyReminderValue} from "../utils/helpers";
+import {
+    getDailyReminderValue,
+    getMetricMetaInfo,
+    timeToString,
+    clearLocalNotification,
+    setLocalNotification
+} from "../utils/helpers";
 
 
 
@@ -105,6 +110,8 @@ class AddEntry extends Component {
 
 
         submitEntry({key,entry})
+
+        clearLocalNotification().then(setLocalNotification())
 
     }
 
